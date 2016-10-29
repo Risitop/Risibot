@@ -335,230 +335,143 @@ PokeyI.prototype.canCure = function(pokemon) { // Checks if the pokemon can remo
   	return false || this.hasAbility(pokemon, "Natural Cure") || this.hasAbility(pokemon, "Shed Skin");
 };
 
-PokeyI.prototype.passiveHeal = function(pokemon) { // If pokemon can learn viable heal moves
-  var coef = 1.0;
+PokeyI.prototype.passiveHeal = function(pokemon) {//Rates if a pokemon can passively heal itself
+	//Formatting in order to use the BattleLearnSet
+	var name = pokemon.species.toLowerCase();
+	if (pokemon.baseSpecies)
+	name = pokemon.baseSpecies.toLowerCase();
 
-  var name = pokemon.species.toLowerCase();
-  if (pokemon.baseSpecies)
-    name = pokemon.baseSpecies.toLowerCase();
+	if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
+		return false;
 
-  if (!BattleLearnsets[name])
-    return false;
-
-  for (var move in BattleLearnsets[name].learnset) {
-    switch (move) {
-      case 'aquaring':
-      case 'leechseed':
-      case 'ingrain':
-        return 1;
-    }
-  }
-  return 0;
+	for (var move in BattleLearnsets[name].learnset) {
+		switch (move) {
+			case 'aquaring':
+			case 'leechseed':
+			case 'ingrain':
+				return 1;
+		}
+	}
+	return 0;
 };
 
-PokeyI.prototype.canSetupDef = function(pokemon, type) { // If pokemon can learn viable heal moves
+PokeyI.prototype.canSetupDef = function(pokemon, type) {//Checks if a pokemon can learn viable defensive setup moves
+	//Formatting in order to use the BattleLearnSet
+	var name = pokemon.species.toLowerCase();
+	if (pokemon.baseSpecies)
+		name = pokemon.baseSpecies.toLowerCase();
 
-  var name = pokemon.species.toLowerCase();
-  if (pokemon.baseSpecies)
-    name = pokemon.baseSpecies.toLowerCase();
+	if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible 
+		return false;
 
-  if (!BattleLearnsets[name])
-    return false;
-
-  for (var move in BattleLearnsets[name].learnset) {
-    switch (move) {
-      case 'cottonguard':
-        if (type == 'def')
-          return true;
-        break;
-      case 'bulkup':
-        if (type == 'def')
-          return true;
-        break;
-      case 'irondefense':
-        if (type == 'def')
-          return true;
-        break;
-      case 'curse':
-        if (type == 'def')
-          return true;
-        break;
-      case 'coil':
-        if (type == 'def')
-          return true;
-        break;
-      case 'barrier':
-        if (type == 'def')
-          return true;
-        break;
-      case 'calmmind':
-        if (type == 'spd')
-          return true;
-        break;
-      case 'acidarmor':
-        if (type == 'spd')
-          return true;
-        break;
-      case 'cosmicpower':
-        return true;
-      case 'stockpile':
-        return true;
-    }
-  }
-  return false;
+	for (var move in BattleLearnsets[name].learnset) {
+		switch (move) {
+      		case 'cottonguard':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'bulkup':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'irondefense':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'curse':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'coil':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'barrier':
+        		if (type == 'def')
+          			return true;
+        	break;
+      		case 'calmmind':
+        		if (type == 'spd')
+          			return true;
+        	break;
+      		case 'acidarmor':
+        		if (type == 'spd')
+          			return true;
+        	break;
+      		case 'cosmicpower':
+        		return true;
+      		case 'stockpile':
+        		return true;
+		}
+	}
+	return false;
 };
 
-PokeyI.prototype.getWeaknesses = function(poke) { //Takes a fullPokemon for argument
-  //Returns a dictionnary of the pokemon weaknesses
-
-  var id = poke.speciesid;
-  if (!id)
-    id = normalizeString(poke.species.toLowerCase());
-  var ab = [""];
-  var init = ["Bug", "Dark", "Dragon", "Electric", "Fairy", "Fighting", "Fire", "Flying",
-    "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock",
-    "Steel", "Water", "powder", "par", "psn", "tox", "brn", "trapped"
-  ];
-
-  for (var i in exports.BattlePokedex[id].abilities) {
-    ab.push(exports.BattlePokedex[id].abilities[i]);
-  }
-
-  var weaknesses = {};
-
-  for (var i = 0; i < init.length; i++) {
-    weaknesses[init[i]] = 1.0;
-  }
-
-  for (var i = 0; i < poke.types.length; i++) {
-    t = poke.types[i];
-    for (var j in exports.BattleTypeChart[t]['damageTaken']) {
-      switch (exports.BattleTypeChart[t]['damageTaken'][j]) {
-        case 1:
-          weaknesses[j] *= 2.0;
-          break;
-        case 2:
-          weaknesses[j] *= 0.5;
-          break;
-        case 3:
-          weaknesses[j] *= 0.0;
-          break;
-      }
-    }
-  }
-
-  for (var i = 0; i < ab.length; i++) {
-    if (ab[i] == "Dry Skin") {
-      weaknesses["Fire"] *= 1.25;
-      weaknesses["Water"] = 0.0;
-    } else if (ab[i] == "Filter" || ab[i] == "Solid Rock") {
-      for (var j in exports.BattleTypeChart[t]['damageTaken']) {
-        if (weaknesses[j] == 2.0 || weaknesses == 4.0) {
-          weaknesses[j] *= 0.75;
-        }
-      }
-    } else if (ab[i] == "Flash Fire") {
-      weaknesses["Fire"] = 0.0;
-    } else if (ab[i] == "HeatProof") {
-      weaknesses["Fire"] *= 0.5;
-    } else if (ab[i] == "Levitate") {
-      weaknesses["Ground"] = 0.0;
-    } else if (ab[i] == "Thick Fat") {
-      weaknesses["Fire"] *= 0.5;
-      weaknesses["Ice"] *= 0.5;
-    } else if (ab[i] == "Volt Absorb" || ab[i] == "Lightningrod" || ab[i] == "Motor Drive") {
-      weaknesses["Electric"] = 0.0;
-      weaknesses["par"] = 0.0;
-    } else if (ab[i] == "Water Absorb" || ab[i] == "Storm Drain") {
-      weaknesses["Water"] = 0.0;
-    } else if (ab[i] == "Wonder Guard") {
-      for (var j in exports.BattleTypeChart[t]['damageTaken']) {
-        if (weaknesses[j] != 2.0 && weaknesses != 4.0) {
-          weaknesses[j] = 0.0;
-        }
-      }
-    } else if (ab[i] == "Sap Sipper") {
-      weaknesses["Grass"] = 0.0;
-      weaknesses["powder"] = 0.0;
-    } else if (ab[i] == "Poison Heal") {
-      weaknesses["tox"] = 0.0;
-      weaknesses["psn"] = 0.0;
-    }
-  }
-
-  return weaknesses;
-};
-
-PokeyI.prototype.getStat = function(pokemon, stat) {
+PokeyI.prototype.getStat = function(pokemon, stat) {//Returns the given base stat of a pokemon
   return pokemon.baseStats[stat];
 };
 
 
-PokeyI.prototype.hasAbility = function(pokemon, ab) { 
-  var hasAb = false;
+PokeyI.prototype.hasAbility = function(pokemon, ab) {//Checks if a pokemon or its mega-evolution has a given ability
+	var hasAb = false;
   
-  var isMega = false;
-  if (pokemon.forme == "Mega")
-    isMega = true;
+	var isMega = false;//Checks if the pokemon is a mega-evolution
+	if (pokemon.forme == "Mega")
+		isMega = true;
   
-  var name = pokemon.species.toLowerCase();
-  if (pokemon.baseSpecies)
-    name = pokemon.baseSpecies.toLowerCase();
+	var name = pokemon.species.toLowerCase();//formatting
+	if (pokemon.baseSpecies)
+		name = pokemon.baseSpecies.toLowerCase();
     
-  if (isMega)
-    name = name + "mega";
+	if (isMega)//formatting for mega-evolutions
+		name = name + "mega";
 
-  if (!BattlePokedex[name])
-    return false;
+	if (!BattlePokedex[name])//Checks if the Pokedex is accessible
+		return false;
 
-  for (var a in BattlePokedex[name].abilities) {
-    switch (BattlePokedex[name].abilities[a]) {
-      case ab:
-        hasAb = true;
-    }
-  }
+	for (var a in BattlePokedex[name].abilities)//Goes through the abilities of the pokemon
+		if (BattlePokedex[name].abilities[a] == ab)
+			hasAb = true;
   
-  if (!isMega) {
-    name = name + "mega";
+	if (!isMega) {
+		name = name + "mega";
       
-    if (!BattlePokedex[name])
-      return hasAb;
+		if (!BattlePokedex[name])//Checks if the pokemon has a mega-evolution
+      	return hasAb;
     
-    for (var a in BattlePokedex[name].abilities) {
-      switch (BattlePokedex[name].abilities[a]) {
-        case ab:
-          hasAb = true;
-      }
-    }
-  }
-  return hasAb;
+		for (var a in BattlePokedex[name].abilities)//Goes through the abilities of the pokemon
+			if (BattlePokedex[name].abilities[a] == ab)
+				hasAb = true;
+	}
+	return hasAb;
 };
 
-PokeyI.prototype.getSetDistance = function(pkPerso, pkCal) { // Shows how different two sets are
-  var d = Math.pow(pkPerso.maxhp - pkCal.maxHP, 2);
-  for (stat in pkPerso.stats) {
-    switch (stat) {
-      case 'atk':
-        d += Math.pow(pkPerso.stats.atk - pkCal.rawStats.at, 2);
-        break;
-      case 'def':
-        d += Math.pow(pkPerso.stats.def - pkCal.rawStats.df, 2);
-        break;
-      case 'spa':
-        d += Math.pow(pkPerso.stats.spa - pkCal.rawStats.sa, 2);
-        break;
-      case 'spd':
-        d += Math.pow(pkPerso.stats.spd - pkCal.rawStats.sd, 2);
-        break;
-      case 'spe':
-        d += Math.pow(pkPerso.stats.spe - pkCal.rawStats.sp, 2);
-        break;
-    }
-  }
-  return Math.sqrt(d);
+PokeyI.prototype.getSetDistance = function(pkPerso, pkCal) { //Calculates the distance between two given sets
+	var d = Math.pow(pkPerso.maxhp - pkCal.maxHP, 2);
+	for (stat in pkPerso.stats) {
+		switch (stat) {
+      		case 'atk':
+        		d += Math.pow(pkPerso.stats.atk - pkCal.rawStats.at, 2);
+        	break;
+      		case 'def':
+        		d += Math.pow(pkPerso.stats.def - pkCal.rawStats.df, 2);
+        	break;
+      		case 'spa':
+        		d += Math.pow(pkPerso.stats.spa - pkCal.rawStats.sa, 2);
+        	break;
+      		case 'spd':
+        		d += Math.pow(pkPerso.stats.spd - pkCal.rawStats.sd, 2);
+        	break;
+      		case 'spe':
+        		d += Math.pow(pkPerso.stats.spe - pkCal.rawStats.sp, 2);
+        	break;
+    	}
+  	}
+	return Math.sqrt(d);
 };
 
 /////////////////////// UNSAFE ZONE ////////////////////////////////////
+//I'm not touching this
 
 PokeyI.prototype.isFaster = function(p1, p2) { // NOT TESTED
     s1 = (p1.stats) ? p1.stats.spe : (p1.baseStats) ? p1.baseStats.spe : -1;
