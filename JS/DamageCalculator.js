@@ -114,6 +114,7 @@ return "Healthy";
 };
 
 getBpException = function(moveName) {//Calculate the base power of some special attacks
+	
 var bp = Moves[moveName].bp;
 
 switch (moveName) {
