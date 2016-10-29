@@ -1,4 +1,4 @@
-PokeyI.prototype.getMaxDamageTaken = function(pokemon) {//hhn
+PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	// Returns [avg1, avg2, avg3, avg4, dmgTaken]
 	// where avgi is the average percentage dealt with the i-th move.
 
