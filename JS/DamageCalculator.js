@@ -1,7 +1,7 @@
 PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	// Returns [avg1, avg2, avg3, avg4, dmgTaken]
 	// where avgi is the average percentage dealt to the ennemy by our i-th move.
-  // and dmgTaken is the maximum damage dealt to our pokemon by the ennemy's one.
+	// and dmgTaken is the maximum damage dealt to our pokemon by the ennemy's one.
 
 	var name = checkExeptions(pokemon.species);
 	var setName;
@@ -59,7 +59,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 		for (var i = 0; i < dmg[0].length; i++) { //Goes trough the damage dealt to the ennemy
 			if (dmg[1][i].damage[7] > maxiDmg[i] && ennemyPkm.level == 100) { // false if it does not exist
 				maxiDmg[i] = dmg[1][i].damage[7];//Contains the average damage dealt to the ennemy by our ith move
-            }
+            			}
 		}
 	}
 
@@ -72,21 +72,21 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 				maxiDmg[i] = 40;
 				break;
 			case "seismictoss":
-      case "nightshade":
+			case "nightshade":
 				maxiDmg[i] = pokemon.level;
 				break;
 			case "finalgambit":
 				maxiDmg[i] = pokemon.maxhp;
 				break;
 		}
-    //Transforms the values in life loss percentage
+		//Transforms the values in life loss percentage
 		maxiDmg[i] = parseInt(100 * maxiDmg[i] / this.bot.ennemy.maxhp);
-    //Refines the calculation by taking into account critical hits
+		//Refines the calculation by taking into account critical hits
 		maxiDmg[i] = parseInt(maxiDmg[i] * (15 / 16) + maxiDmg[i] * (1 / 16) * ((myPkm.ability == "Sniper") ? 2 : 1.5)); // E(X) with critical
 	}
-  //Transforms the value in life loss percentage
+	//Transforms the value in life loss percentage
 	maxiDmg[4] = parseInt(maxiDmg[4] / this.bot.pokemon.maxhp * 100);
-  //Takes into account critical hits
+	//Takes into account critical hits
 	maxiDmg[4] = parseInt(maxiDmg[4] * (15 / 16) + maxiDmg[4] * (1 / 16) * ((this.hasAbility(this.bot.ennemy, "Sniper")) ? 2 : 1.5)); // E(X) with critical
 
 	for (var i = 0; i < 5; i++) {//We only need to do 100% damage do we
@@ -118,7 +118,7 @@ var bp = Moves[moveName].bp;
 
 switch (moveName) {
 	case "Low Kick":
-  case "Grass Knot":
+	case "Grass Knot":
 		w = this.bot.ennemy.weightkg;
 		bp = (w < 10) ? 20 : (w < 25) ? 40 : (w < 50) ? 60 : (w < 100) ? 80 : (w < 200) ? 100 : 120;
 		break;
