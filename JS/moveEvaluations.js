@@ -84,7 +84,7 @@ PokeyI.prototype.getStatusInterest = function(s) {
 				return 1;
 			return 0;
 		case 'slp':
-			return 1;
+			return 2;
 	}
 	return 0;
 }
@@ -95,7 +95,7 @@ PokeyI.prototype.evalSpin = function(move, dmgTaken) { // Is this spin worth it 
     this.hasType(this.bot.ennemy, "Ghost")) {
     return 0;
   }
-  return 150;
+  return 90;
 };
 
 PokeyI.prototype.evalTraps = function(move) {
