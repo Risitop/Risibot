@@ -17,6 +17,7 @@ Probabilist bot whose the goal is to be able to GRIND THE SHOWDOWN'S LADDER.
 
 # To Do
 
+- Apprendre à commenter HEIN
 - Mirror coat / Counter
 - Rest
 - Synchronize
@@ -26,6 +27,11 @@ Probabilist bot whose the goal is to be able to GRIND THE SHOWDOWN'S LADDER.
 - Taunt
 - Fake out
 - Méthode de Jacobi MDR
+
+# Maxime To Do
+
+- Bijection réciproque du calculateur de damage
+- Calcul du set le plus proche grâce aux données in game
 
 ...
 
@@ -39,7 +45,7 @@ Probabilist bot whose the goal is to be able to GRIND THE SHOWDOWN'S LADDER.
 V0.5 : Basic switch !
 
 # Terms
-Thisibot depends on Pokémon Sohowdown's client.
+Thisibot depends on Pokémon Showdown's client.
 Pokémon Showdown's client is distributed under the terms of the [AGPLv3][5].
 
   [5]: http://www.gnu.org/licenses/agpl-3.0.html
