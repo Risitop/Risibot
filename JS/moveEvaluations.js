@@ -1,6 +1,6 @@
 Risibot.prototype.choseMove = function() {
 	
-	if (!this.pokemon || !this.ennemy)
+	if (!this.pokemon || !this.ennemy || this.pokemon.fainted || this.ennemy.fainted)
 		return -1;
 	
 	var dmgComputation = this.AI.getMaxDamageTaken(this.pokemon, this.ennemy);
@@ -48,7 +48,7 @@ Risibot.prototype.choseMove = function() {
 	}       
     // We erase the NaN and disabled moves
     for (j = 0; j < 4; j++) {
-		movesInterests[j] = ( (disabledMoves[j] || movesInterests[j] == NaN) ? 0 : movesInterests[j] );
+		movesInterests[j] = ( (disabledMoves[j] || movesInterests[j] == NaN) ? -1 : movesInterests[j] );
 	}
 	console.log("Risibot: choseMove: " + movesInterests); 
 	var choice = getMaxIndex(movesInterests);
