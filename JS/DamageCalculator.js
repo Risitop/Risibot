@@ -163,23 +163,23 @@ PokeyI.prototype.getBpException = function(moveName) { //Calculate the base powe
   return bp;
 };
 
-PokeyI.prototype.applyBoosts = function(pkmCalc, pkm) { //Converts the Showdown's representation into the Dmg Calc one
+PokeyI.prototype.applyBoosts = function(pkmCalc, pkm) { //Converts the Showdown's representation into the Dmg Calc one}
   for (var b in pkmCalc.boosts) {
     switch (b) {
       case "at":
-        pkmCalc.at = (!pkm.boosts.atk) ? 0 : pkm.boosts.atk;
+        pkmCalc.boosts.at = ( (!pkm.boosts.atk) ? 0 : pkm.boosts.atk );
         break;
       case "df":
-        pkmCalc.df = (!pkm.boosts.def) ? 0 : pkm.boosts.def;
+        pkmCalc.boosts.df = ( (!pkm.boosts.def) ? 0 : pkm.boosts.def );
         break;
       case "sa":
-        pkmCalc.sa = (!pkm.boosts.spa) ? 0 : pkm.boosts.spa;
+        pkmCalc.boosts.sa = ( (!pkm.boosts.spa) ? 0 : pkm.boosts.spa );
         break;
       case "sd":
-        pkmCalc.sd = (!pkm.boosts.spd) ? 0 : pkm.boosts.spd;
+        pkmCalc.boosts.sd = ( (!pkm.boosts.spd) ? 0 : pkm.boosts.spd );
         break;
       case "sp":
-        pkmCalc.sp = (!pkm.boosts.spe) ? 0 : pkm.boosts.spe;
+        pkmCalc.boosts.sp = ( (!pkm.boosts.spe) ? 0 : pkm.boosts.spe );
         break;
     }
   }
