@@ -58,7 +58,7 @@ PokeyI.prototype.evalStatus = function(move, dmgTaken) { // Is this status move 
 		(move.status == "brn" && this.hasAbility(this.bot.ennemy, "Water Veil")) ||
 		(this.hasAbility(this.bot.ennemy, "Magic Bounce")) ||
 		(this.hasAbility(this.bot.ennemy, "Synchronize")) ||
-		(this.room.battle.yourSide.sideConditions.safeguard)) {
+		(this.bot.room.battle.yourSide.sideConditions.safeguard)) {
 		return 0;
 	}
 	//Using getStatusInterest to rate the impotance of a given status (the importance is lowered
