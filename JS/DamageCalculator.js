@@ -1,4 +1,3 @@
-
 PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	// Returns [avg1, avg2, avg3, avg4, dmgTaken]
 	// where avgi is the average percentage dealt to the ennemy by our i-th move.
@@ -46,7 +45,6 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
     var numberOfSets = 0;
 	var ennemyName = checkExeptions(this.bot.ennemy.species);//Gets the name of the opponent's pokemon
 	for (var set in setdex[ennemyName]) {//Goes through its possible sets
-        numberOfSets += 1;
 		setName = ennemyName + " (" + set + ")";//formats the set's name
 		var ennemyPkm = new PokemonCalc(setName);//Creates a pokemon with the appropriate set
 
@@ -59,8 +57,10 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 		}
 
 		for (var i = 0; i < dmg[0].length; i++) { //Goes trough the damage dealt to the ennemy
-			if (ennemyPkm.level == 100)
+			if (ennemyPkm.level == 100) {
+                numberOfSets += 1;
 				maxiDmg[i] += dmg[1][i].damage[7];//Contains the average damage dealt to the ennemy by our ith move
+            }
         }
 	}
 
@@ -92,7 +92,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	maxiDmg[4] = parseInt(maxiDmg[4] * (15 / 16) + maxiDmg[4] * (1 / 16) * ((this.hasAbility(this.bot.ennemy, "Sniper")) ? 2 : 1.5)); // E(X) with critical
 
 	for (var i = 0; i < 4; i++) {// 100 - remaining hp
-		maxiDmg[i] = 100 - Math.max(0, this.bot.ennemy.hp - maxiDmg[i]);
+		maxiDmg[i] = Math.min(100, this.bot.ennemy.hp - maxiDmg[i]);
 	}
 
 	return maxiDmg;
