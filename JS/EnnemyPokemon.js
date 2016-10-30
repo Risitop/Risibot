@@ -39,7 +39,7 @@ function EnnemyPokemon(pkmn) {
 };
 
 EnnemyPokemon.prototype.getMaxHP = function() {
-  return Math.floor((31 + 2 * this.baseStats["hp"] + Math.floor(this.ev["hp"] / 4.0)) * this.leve l/ 100.0 + 10 + this.level);
+  return Math.floor((31 + 2 * this.baseStats["hp"] + Math.floor(this.ev["hp"] / 4.0)) * this.level / 100.0 + 10 + this.level);
 };
 
 EnnemyPokemon.prototype.getStat = function(stat) {//updates the value of a given stat
