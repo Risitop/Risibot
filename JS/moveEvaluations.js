@@ -43,12 +43,14 @@ Risibot.prototype.choseMove = function() {
 	// We delete disabled moves (scarf, disable...)
 	var disabledMoves = [1, 1, 1, 1];
 	for (var j = 0; j < this.buttonsMoves.length; j++) {
-		disabledMoves[this.buttonsMoves[j].value] = 0;
+        if (this.buttonsMoves[j])
+            disabledMoves[this.buttonsMoves[j].value - 1] = 0;
+	}       
+    // We erase the NaN and disabled moves
+    for (j = 0; j < 4; j++) {
+		movesInterests[j] = ( (disabledMoves[j] || movesInterests[j] == NaN) ? 0 : movesInterests[j] );
 	}
-	for (j = 0; j < 4; j++) {
-		movesInterests[j] = (disabledMoves[j]) ? 0 : movesInterests[j];
-	}
-	console.log("Risibot: choseMove: " + movesInterests);
+	console.log("Risibot: choseMove: " + movesInterests); 
 	var choice = getMaxIndex(movesInterests);
 	return choice;
 };
