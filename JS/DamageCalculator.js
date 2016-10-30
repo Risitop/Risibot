@@ -89,8 +89,8 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	//Takes into account critical hits
 	maxiDmg[4] = parseInt(maxiDmg[4] * (15 / 16) + maxiDmg[4] * (1 / 16) * ((this.hasAbility(this.bot.ennemy, "Sniper")) ? 2 : 1.5)); // E(X) with critical
 
-	for (var i = 0; i < 5; i++) {//We only need to do 100% damage do we
-		maxiDmg[i] = Math.min(100, maxiDmg[i]);
+	for (var i = 0; i < 4; i++) {// 100 - remaining hp
+		maxiDmg[i] = 100 - Math.max(0, this.bot.ennemy.hp - maxiDmg[i]);
 	}
 
 	return maxiDmg;
