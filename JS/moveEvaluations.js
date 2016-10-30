@@ -369,6 +369,27 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
 
 };
 
+PokeyI.prototype.evalFakeOut = function(dmg, dmgMoves, dmgTaken) {
+    if (this.bot.pokemon.lastmove != "") {
+        return 0;
+    }
+    var numberOfLethalMoves = countTab(dmgMoves, 100);
+    if (this.isFaster(this.bot.pokemon, this.bot.ennemy)) {
+        if (numberOfLethalMoves && dmg < 100) {
+            return 0;
+        }    
+    }
+    return 1;
+};
+
+countTab = function(t, e) {
+    var n = 0;
+    for (var i = 0; i < t.length; i++) {
+        n += (t[i] == e) ? 1 : 0;
+    }
+    return n;
+};
+
 
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
 
