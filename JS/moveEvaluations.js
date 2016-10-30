@@ -4,7 +4,7 @@ Risibot.prototype.choseMove = function() {
 		return -1;
 	
 	var dmgComputation = this.AI.getMaxDamageTaken(this.pokemon, this.ennemy);
-	var dmgTaken = movesInterests[4];
+	var dmgTaken = dmgComputation[4];
 	var movesInterests = dmgComputation.slice(0, 4);
 	
 	for (var moveType in this.moves) {
