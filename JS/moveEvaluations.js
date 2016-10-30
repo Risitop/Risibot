@@ -8,7 +8,7 @@ Risibot.prototype.choseMove = function() {
   var movesInterests = dmgComputation.slice(0, 4);
 
   for (var i = 0; i < dmgTaken.length; i++) {
-      dmgTaken[i] = parseInt(100 * (Math.min(this.ennemy.hp, dmgTaken[i]) / this.ennemy.hp));
+      dmgTaken[i] = parseInt(100 * (Math.min(this.room.battle.yourSide.active[0].hp, dmgTaken[i]) / this.room.battle.yourSide.active[0].hp));
   }
 
   for (var moveType in this.moves) {
