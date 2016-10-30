@@ -434,6 +434,7 @@ PokeyI.prototype.evalBoostMove = function(move, dmgTaken) {
       case 'spd':
           return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
   }
+  return 0;
 };
 
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
