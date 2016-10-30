@@ -42,7 +42,7 @@ Risibot.prototype.choseMove = function() {
           movesInterests[k - 1] = this.AI.evalPainSplit(move, dmgTaken);
           break;
         case 'fakeOut':
-          movesInterests[k - 1] *= this.AI.evalFakeOut(move, dmgTaken);
+          movesInterests[k - 1] = this.AI.evalFakeOut(move, dmgTaken);
           break;
       }
       console.log("Risibot: choseMove: Move " + move.name + ".");
@@ -379,7 +379,7 @@ PokeyI.prototype.evalFakeOut = function(dmg, dmgMoves, dmgTaken) {
             return 0;
         }    
     }
-    return 1;
+    return 100;
 };
 
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
