@@ -382,15 +382,6 @@ PokeyI.prototype.evalFakeOut = function(dmg, dmgMoves, dmgTaken) {
     return 1;
 };
 
-countTab = function(t, e) {
-    var n = 0;
-    for (var i = 0; i < t.length; i++) {
-        n += (t[i] == e) ? 1 : 0;
-    }
-    return n;
-};
-
-
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
 
 PokeyI.prototype.evalPainSplit = function(move, dmgTaken) { // NOT TESTED NOW
