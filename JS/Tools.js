@@ -77,3 +77,12 @@ getStatValue = function(stat, nature, base, iv, ev, lvl) {
 	
 	return Math.floor(v);
 }
+
+
+countTab = function(t, e) {
+    var n = 0;
+    for (var i = 0; i < t.length; i++) {
+        n += (t[i] == e) ? 1 : 0;
+    }
+    return n;
+};
