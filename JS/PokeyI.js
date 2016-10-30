@@ -293,46 +293,122 @@ PokeyI.prototype.canHeal = function(pokemon) { //Rates the healing capabilities 
 };
 
 PokeyI.prototype.canBurn = function(pokemon) { //Checks if a pokemon can burn its ennemy
-	//Formatting in order to use the BattleLearnSet
-	var name = pokemon.species.toLowerCase();
-	if (pokemon.baseSpecies)
-		name = pokemon.baseSpecies.toLowerCase();
+    //Formatting in order to use the BattleLearnSet
+    var name = pokemon.species.toLowerCase();
+    if (pokemon.baseSpecies)
+        name = pokemon.baseSpecies.toLowerCase();
+    
+    if (pokemon.moveTrack) {
+      for (var i = 0; i < pokemon.moveTrack.length; i++) {
+         switch (move) {
+            case 'sacredfire':
+            case 'scald':
+            case 'willowisp':
+            case 'steameruption':
+            case 'iceburn':
+            case 'inferno':
+            case 'lavaplume':
+                return 1;
+        }
+      }
+    }
 
-	if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
-		return false;
+    if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
+        return false;
 
-	for (var move in BattleLearnsets[name].learnset) {
-		switch (move) {
-      		case 'sacredfire':
-      		case 'scald':
-      		case 'willowisp':
-      		case 'steameruption':
-      		case 'iceburn':
-      		case 'inferno':
-      		case 'lavaplume':
-        		return true;
-    	}
-	}
-	return false;
+    for (var move in BattleLearnsets[name].learnset) {
+        switch (move) {
+            case 'sacredfire':
+            case 'scald':
+            case 'willowisp':
+            case 'steameruption':
+            case 'iceburn':
+            case 'inferno':
+            case 'lavaplume':
+                return 0.5;
+        }
+    }
+    return 0;
+};
+
+PokeyI.prototype.canParalyze= function(pokemon) { //Checks if a pokemon can burn its ennemy
+    //Formatting in order to use the BattleLearnSet
+    var name = pokemon.species.toLowerCase();
+    if (pokemon.baseSpecies)
+        name = pokemon.baseSpecies.toLowerCase();
+    
+    if (pokemon.moveTrack) {
+      for (var i = 0; i < pokemon.moveTrack.length; i++) {
+         switch (move) {
+            case 'bodyslam':
+            case 'bounce':
+            case 'discharge':
+            case 'dragonbreath':
+            case 'forcepalm':
+            case 'freezeshock':
+            case 'glare':
+            case 'lick':
+            case 'nuzzle':
+            case 'spark':
+            case 'stunspore':
+            case 'thunder':
+            case 'thunderwave':
+            case 'zapcannon':
+                return 1;
+        }
+      }
+    }
+
+    if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
+        return false;
+
+    for (var move in BattleLearnsets[name].learnset) {
+        switch (move) {
+            case 'bodyslam':
+            case 'bounce':
+            case 'discharge':
+            case 'dragonbreath':
+            case 'forcepalm':
+            case 'freezeshock':
+            case 'glare':
+            case 'lick':
+            case 'nuzzle':
+            case 'spark':
+            case 'stunspore':
+            case 'thunder':
+            case 'thunderwave':
+            case 'zapcannon':
+                return 0.5;
+        }
+    }
+    return 0;
 };
 
 PokeyI.prototype.canCure = function(pokemon) { // Checks if the pokemon can remove its statuses
-	//Formatting in order to use the BattleLearnSet
-	var name = pokemon.species.toLowerCase();
-	if (pokemon.baseSpecies)
-		name = pokemon.baseSpecies.toLowerCase();
+    //Formatting in order to use the BattleLearnSet
+    var name = pokemon.species.toLowerCase();
+    if (pokemon.baseSpecies)
+        name = pokemon.baseSpecies.toLowerCase();
+        
+    if (pokemon.moveTrack) {
+      switch (move) {
+            case 'healbell':
+            case 'aromatherapy':
+                return 1;
+        }
+    }
 
-	if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
-		return false;
+    if (!BattleLearnsets[name])//Checks if the BattleLearnSet is accessible
+        return false;
 
-	for (var move in BattleLearnsets[name].learnset) {
-		switch (move) {
-      		case 'healbell':
-      		case 'aromatherapy':
-        		return true;
-    	}
-  	}
-  	return false || this.hasAbility(pokemon, "Natural Cure") || this.hasAbility(pokemon, "Shed Skin");
+    for (var move in BattleLearnsets[name].learnset) {
+        switch (move) {
+            case 'healbell':
+            case 'aromatherapy':
+                return 0.5;
+        }
+    }
+    return false || this.hasAbility(pokemon, "Natural Cure") || this.hasAbility(pokemon, "Shed Skin");
 };
 
 PokeyI.prototype.passiveHeal = function(pokemon) {//Rates if a pokemon can passively heal itself
