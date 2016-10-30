@@ -95,7 +95,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
   maxiDmg[4] = parseInt(maxiDmg[4] * (15 / 16) + maxiDmg[4] * (1 / 16) * ((this.hasAbility(this.bot.ennemy, "Sniper")) ? 2 : 1.5)); // E(X) with critical
 
   for (var i = 0; i < 4; i++) { // 100 - remaining hp
-    maxiDmg[i] = Math.min(100, this.bot.ennemy.hp - maxiDmg[i]);
+    maxiDmg[i] = Math.min(100, maxiDmg[i]);
   }
 
   return maxiDmg;
