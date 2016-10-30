@@ -150,7 +150,7 @@ PokeyI.prototype.evalTraps = function(move, dmgTaken) { //Is it woth it to throw
   return 0;
 };
 
-PokeI.prototype.getXHKO = function(defPoke, offPoke) {
+PokeyI.prototype.getXHKO = function(defPoke, offPoke) {
 
   var dmg = this.getDamageTaken(defPoke)[4];
   var extraDmg = 0;
