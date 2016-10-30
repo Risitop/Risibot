@@ -8,7 +8,6 @@ Risibot.prototype.choseMove = function() {
   var movesInterests = dmgComputation.slice(0, 4);
 
   for (var i = 0; i < dmgTaken.length; i++) {
-    if (dmgTaken[i] && dmgTaken[i] != NaN)
       dmgTaken[i] = parseInt(100 * (Math.min(this.ennemy.hp, dmgTaken[i]) / this.ennemy.hp));
   }
 
@@ -152,7 +151,7 @@ PokeyI.prototype.evalTraps = function(move, dmgTaken) { //Is it woth it to throw
 
 PokeyI.prototype.getXHKO = function(defPoke, offPoke) {
 
-  var dmg = this.getDamageTaken(defPoke)[4];
+  var dmg = this.getMaxDamageTaken(defPoke)[4];
   var extraDmg = 0;
 
   extraDmg += (defPoke.status == "brn") ? 12 : 0;
@@ -172,18 +171,18 @@ PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of
     k -= 1;
 
   if (k == 0) { // We will die before having done anything
-    if (damageTaken > 65) { // Healing will not change anything
+    if (dmgTaken > 65) { // Healing will not change anything
       return 10;
-    } else if (damageTaken > 40) {
+    } else if (dmgTaken > 40) {
       if (this.bot.ennemy.status != "" && this.bot.ennemy.status != "par") { //If he has a status
         return 50; //Tempo
       }
     }
     return 29;
   } else if (k == 1) { // We can only use one move before dying
-    if (damageTaken > 65) { // Healing will not change anything
+    if (dmgTaken > 65) { // Healing will not change anything
       return 10;
-    } else if (damageTaken > 40) {
+    } else if (dmgTaken > 40) {
       if (this.bot.ennemy.status != "" && this.bot.ennemy.status != "par") { //If he has a status
         return 100; //Tempo
       } else {
@@ -194,7 +193,7 @@ PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of
     }
   } else if (k == 2) {
     //If we take less than 65% damage we have a few turns left, we can wait before healing
-    if (hp < 50) { //If we are low life               
+    if (hp < 50) { //If we are low life
       if (dmgTaken < 65) { //If the ennemy doesn't hit hard
         return 100; //We heal
       } else { //If he hits like a truck
@@ -229,11 +228,11 @@ PokeyI.prototype.evalSeeds = function(move, dmgTaken) {
 
 PokeyI.prototype.evalDefog = function(move, dmgTaken) {
 
-  if (!this.bot.room.battle.mySide.sideConditions)
+  if (jQuery.isEmptyObject(this.bot.room.battle.mySide.sideConditions))
     return 0;
     
-  var allies = getNotFainted(this.bot.room.battle.mySide.pokemon);
-  var ennemies = getNotFainted(this.bot.room.battle.yourSide.pokemon);
+  var allies = this.getNotFainted(this.bot.room.battle.mySide.pokemon);
+  var ennemies = this.getNotFainted(this.bot.room.battle.yourSide.pokemon);
 
   var indic = 0;
   for (var condition in this.bot.room.battle.mySide.sideConditions) {
@@ -341,7 +340,7 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
 
   coefTerrain = 0;
   for (c in this.bot.room.battle.yourSide.sideConditions) {
-    switch (this.bot.room.battle.yourSide.sideConditions[c]) {
+    switch (c) {
       case 'stealthrock': // Will damage and destabilize
       case 'spikes':
       case 'toxicspikes':
@@ -351,7 +350,7 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
         coefTerrain += 1.0;
     }
   }  
-  var ennemiesInPocket = getNotFainted(this.bot.room.battle.yourSide.pokemon).slice(1);
+  var ennemiesInPocket = this.getNotFainted(this.bot.room.battle.yourSide.pokemon).slice(1);
   if (this.getStealthRockPressure(ennemiesInPocket) == 12 && this.bot.room.battle.yourSide.sideConditions.stealthrock)
       coefTerrain += 4;
   
@@ -365,7 +364,7 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
   }
   
   var coef = coefTerrain + coefBoosts;
-  return min(92, parseInt( (coef/4) * 63 + 29 )); // OBSCURITEEEEEEEEE HAAAAAAN
+  return Math.min(92, parseInt( (coef/4) * 63 + 29 )); // OBSCURITEEEEEEEEE HAAAAAAN
 
 };
 
