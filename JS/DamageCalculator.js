@@ -56,10 +56,12 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
       if (dmg[0][i].damage[15] > maxiDmg[4]) // false if it does not exist
         maxiDmg[4] = dmg[0][i].damage[15]; //Contains the maximum damage we can possibly take
     }
+    
+    if (ennemyPkm.level == 100)      
+        numberOfSets += 1;
 
     for (var i = 0; i < dmg[0].length; i++) { //Goes trough the damage dealt to the ennemy
       if (ennemyPkm.level == 100) {
-        numberOfSets += 1;
         maxiDmg[i] += dmg[1][i].damage[7]; //Contains the average damage dealt to the ennemy by our ith move
       }
     }
