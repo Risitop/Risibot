@@ -3,6 +3,7 @@ function EnnemyPokemon(pkmn) {
   this.ability = pkmn.ability;
   this.baseAbility = pkmn.baseAbility;
   this.types = pkmn.types;
+  this.name = pkmn.name;
 
   this.baseSpecies = pkmn.baseSpecies;
   this.species = pkmn.species;
