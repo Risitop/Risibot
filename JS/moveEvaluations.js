@@ -7,6 +7,11 @@ Risibot.prototype.choseMove = function() {
 	var dmgTaken = dmgComputation[4];
 	var movesInterests = dmgComputation.slice(0, 4);
 	
+	for (var i = 0; i < dmgTaken.length; i++) { // We calculate 100 - remaining HP after our atack. 100 : kill it
+		if (dmgTaken[i] && dmgTaken[i] != NaN) 
+			dmgTaken[i] = 100 - (this.ennemy.hp - dmgTaken[i]); 		
+	}
+	
 	for (var moveType in this.moves) {
 		for (var j = 0; j < this.moves[moveType].length; j++) {
 			var move = this.moves[moveType][j][0];
