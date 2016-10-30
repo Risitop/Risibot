@@ -128,6 +128,10 @@ PokeyI.prototype.evalTraps = function(move, dmgTaken) { //Is it woth it to throw
   //If we are at risk to dying then no
   if (this.getXHKO(this.bot.pokemon, this.bot.enemy) == 1 || this.hasAbility(this.bot.ennemy, "Magic Bounce"))
     return 0;
+  
+  var ennemies = this.getNotFainted(this.bot.room.battle.yourSide.pokemon);
+  if (ennemies.length == 0)
+    return 0;
 
   switch (move.id) {
     case "stealthrock":
@@ -351,6 +355,9 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
     }
   }  
   var ennemiesInPocket = this.getNotFainted(this.bot.room.battle.yourSide.pokemon).slice(1);
+  if (ennemiesInPocket.length == 0)
+    return 0;
+  
   if (this.getStealthRockPressure(ennemiesInPocket) == 12 && this.bot.room.battle.yourSide.sideConditions.stealthrock)
       coefTerrain += 4;
   
