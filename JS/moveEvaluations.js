@@ -48,8 +48,8 @@ Risibot.prototype.choseMove = function() {
         case 'painSplit':
           movesInterests[k - 1] = this.AI.evalPainSplit(move, dmgTaken);
           break;
-        case 'boosts':
-          movesInterests[k - 1] = this.AI.getBoostMove(move, dmgTaken);
+        case 'boost':
+          movesInterests[k - 1] = this.AI.evalBoostMove(move, dmgTaken);
           break;
         case 'fakeOut':
           movesInterests[k - 1] = this.AI.evalFakeOut(move, dmgTaken);
@@ -401,6 +401,39 @@ PokeyI.prototype.evalFakeOut = function(dmg, dmgMoves, dmgTaken) {
         }    
     }
     return 100;
+};
+
+PokeyI.prototype.evalPriorityMove = function(move, dmgMove, dmgTaken) {
+  if (dmgMove == 100 || dmgTaken >= this.bot.pokemon.hp) { // If it's enough to kill the ennemy or if we are in danger
+      return 100 + move.priority;
+  } 
+  return dmgMove;
+};
+
+PokeyI.prototype.evalBoostMove = function(move, dmgTaken) {
+  //Can I set up myself ?
+  var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
+  
+  if (k < 3)
+      return 0;
+  
+  //If yes
+  switch (move.boosts) {
+      case 'spe':
+          if (this.canParalyze(this.bot.ennemy) >= 0.5)//no darkness
+              return 0;
+          return ( (this.bot.room.myPokemon.stats.spe < 438) ? 89 : 0 );
+      case 'atk':
+          if (this.canBurn(this.bot.ennemy) >= 0.5)
+              return 0;
+          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
+      case 'spa':
+          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
+      case 'def':
+          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
+      case 'spd':
+          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
+  }
 };
 
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
