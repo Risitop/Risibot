@@ -9,10 +9,10 @@ Risibot.prototype.choseMove = function() {
 	
 	for (var moveType in this.moves) {
 		for (var j = 0; j < this.moves[moveType].length; j++) {
-			move = this.moves[moveType][j][0];
-			k = this.moves[moveType][j][1];
+			var move = this.moves[moveType][j][0];
+			var k = this.moves[moveType][j][1];
 			switch (moveType) {
-				case 'status'
+				case 'status':
 					movesInterests[k - 1] = this.AI.evalStatus(move, dmgTaken);
 					break;
 				case 'traps':
@@ -99,7 +99,7 @@ PokeyI.prototype.evalSpin = function(move, dmgTaken) { // Is this spin worth it 
 	return 90;
 };
 
-PokeyI.prototype.evalTraps = function(move) {//Is it woth it to throw entry hazards in the way ?
+PokeyI.prototype.evalTraps = function(move, dmgTaken) {//Is it woth it to throw entry hazards in the way ?
 	//If we are at risk to dying then no
 	if (this.getDanger(this.bot.ennemy, this.bot.pokemon) > 100 || this.hasAbility(this.bot.ennemy, "Magic Bounce"))
 		return 0;
@@ -122,7 +122,7 @@ PokeyI.prototype.evalTraps = function(move) {//Is it woth it to throw entry haza
 	return 0;
 };
 
-PokeyI.prototype.evalHeal = function(move) {//Returns the priority of using a healing move
+PokeyI.prototype.evalHeal = function(move, dmgTaken) {//Returns the priority of using a healing move
 	//WARNING should use xHKO when Maxime codes it huehue
 	hp = this.bot.pokemon.hp / this.bot.pokemon.hpmax;
 	if (hp < 0.25)
@@ -138,7 +138,7 @@ PokeyI.prototype.evalHeal = function(move) {//Returns the priority of using a he
 	return 0;
 };
 
-PokeyI.prototype.evalSeeds = function(move) {
+PokeyI.prototype.evalSeeds = function(move, dmgTaken) {
 
 	if (this.bot.ennemy.volatiles.leechseed || this.hasType(this.bot.ennemy, "Grass") ||
 		this.hasAbility(this.bot.ennemy, "Magic Bounce") || this.hasAbility(this.bot.ennemy, "Sap Sipper"))
@@ -154,7 +154,7 @@ PokeyI.prototype.evalSeeds = function(move) {
 	return 0 // ABORT MISSION
 };
 
-PokeyI.prototype.evalDefog = function(move) {
+PokeyI.prototype.evalDefog = function(move, dmgTaken) {
 
   if (!this.bot.room.battle.mySide.sideConditions)
     return 0;
@@ -203,7 +203,7 @@ PokeyI.prototype.evalDefog = function(move) {
     return 50 * indic;
 };
 
-PokeyI.prototype.evalRoar = function(move) {
+PokeyI.prototype.evalRoar = function(move, dmgTaken) {
 
   if (this.hasAbility(this.bot.ennemy, "Magic Bounce"))
     return 0;
@@ -233,7 +233,7 @@ PokeyI.prototype.evalRoar = function(move) {
 
 /////////////////// UNSSAFE ZONE //////////////////////////////////////
 
-PokeyI.prototype.evalPainSplit = function(move) { // NOT TESTED NOW
+PokeyI.prototype.evalPainSplit = function(move, dmgTaken) { // NOT TESTED NOW
 
   expectedDamage = this.getMaxDamageTaken(this.bot.pokemon, this.bot.ennemy)[1];
   ennemyHP = parseInt((parseInt(31 + 2 * this.bot.ennemy.baseStats * this.bot.ennemy.level / 100) + 10 + this.bot.ennemy.level) * this.bot.ennemy.hp / 100);
@@ -265,3 +265,4 @@ PokeyI.prototype.evalPainSplit = function(move) { // NOT TESTED NOW
 
   return (newHP / expectedHP) * 100;
 };
+	
