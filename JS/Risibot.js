@@ -206,13 +206,13 @@ Risibot.prototype.attack = function(id) {
 };
 Risibot.prototype.routine = function() {
 
-  if (this.currentTurn < this.room.battle.turn) {
+  if (this.currentTurn < this.room.battle.turn && !this.room.myPokemon[0].fainted) {
     this.movesParsed = false;
     this.parsingMoves = false;
+    this.havePlayed = false;
     this.getEnnemyPokemon();
     this.getPokemon();
     this.currentTurn = this.room.battle.turn;
-		console.log("Maximum damage taken: " + this.AI.getMaxDamageTaken(this.pokemon));
   }
 
   if (!this.movesParsed && !this.parsingMoves) {
@@ -220,18 +220,17 @@ Risibot.prototype.routine = function() {
   }
 
   if (this.waitingForMe()) {
-    if (this.pokemon && this.room.battle.mySide.active && !this.pokemon.fainted && this.movesParsed) {
+    if (this.pokemon && this.room.battle.mySide.active && !this.room.myPokemon[0].fainted && this.movesParsed && !this.havePlayed) {
       m = this.choseMove();
-			if (m != -1)
-				this.attack(m + 1);
+            if (m != -1) {
+                this.attack(m + 1);
+                this.havePlayed = true;
+            }
     } else { //Chose another 
       placeholder = 1;
     }
   }
-	
-	if (this.stopSignal)
-		return;
-	
+    
   var that = this;
   setTimeout(function() {
     that.routine();
