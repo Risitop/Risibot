@@ -84,7 +84,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
         maxiDmg[i] = pokemon.level;
         break;
       case "finalgambit":
-        maxiDmg[i] = pokemon.maxhp;
+        maxiDmg[i] = this.bot.room.myPokemon[0].hp;
         break;
     }
     //Transforms the values in life loss percentage
