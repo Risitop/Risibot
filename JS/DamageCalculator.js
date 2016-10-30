@@ -30,9 +30,10 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
   this.applyBoosts(myPkm, pokemon); //Transfers eventual boosts
 
   for (var i = 0; i < pokemon.moves.length; i++) { //Goes through our moves
-    var m = Moves[BattleMovedex[pokemon.moves[i]].name]; //Formats the ith move
+    var moveName = this.checkMoveNameExceptions(pokemon.moves[i]);
+    var m = Moves[BattleMovedex[moveName].name]; //Formats the ith move
     if (m) { //Checks for exceptions and assigns the move
-      m.bp = this.getBpException(BattleMovedex[pokemon.moves[i]].name);
+      m.bp = this.getBpException(BattleMovedex[moveName].name);
       myPkm.moves[i] = m;
     } else
       myPkm.moves[i] = Moves["(No Move)"];
@@ -96,9 +97,17 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 
   for (var i = 0; i < 4; i++) { // 100 - remaining hp
     maxiDmg[i] = Math.min(100, maxiDmg[i]);
+    if (isNaN(maxiDmg[i]))
+        maxiDmg[i] = 0;
   }
 
   return maxiDmg;
+};
+
+PokeyI.prototype.checkMoveNameExceptions = function(str) {
+    if (str.slice(-2) == "60")
+        return str.slice(0, -2);
+    return str;
 };
 
 statusConvert = function(st) { //Formats Showdown's statuses for the Damage Calculator
