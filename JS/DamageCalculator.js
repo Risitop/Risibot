@@ -69,6 +69,9 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
   }
 
   for (var i = 0; i < pokemon.moves.length; i++) { //Corner cases
+    maxiDmg[i] /= numberOfSets; // We calculate the average power
+    //Refines the calculation by taking into account critical hits
+    maxiDmg[i] = parseInt(maxiDmg[i] * (15 / 16) + maxiDmg[i] * (1 / 16) * ((myPkm.ability == "Sniper") ? 2 : 1.5)); // E(X) with critical
     switch (pokemon.moves[i]) {
       case "sonicboom":
         maxiDmg[i] = 20;
@@ -84,11 +87,8 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
         maxiDmg[i] = pokemon.maxhp;
         break;
     }
-    maxiDmg[i] /= numberOfSets; // We calculate the average power
     //Transforms the values in life loss percentage
     maxiDmg[i] = parseInt(100 * maxiDmg[i] / this.bot.ennemy.maxhp);
-    //Refines the calculation by taking into account critical hits
-    maxiDmg[i] = parseInt(maxiDmg[i] * (15 / 16) + maxiDmg[i] * (1 / 16) * ((myPkm.ability == "Sniper") ? 2 : 1.5)); // E(X) with critical
   }
   //Transforms the value in life loss percentage
   maxiDmg[4] = parseInt(maxiDmg[4] / this.bot.pokemon.maxhp * 100);
@@ -100,9 +100,14 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
     if (isNaN(maxiDmg[i]))
         maxiDmg[i] = 0;
   }
-
+    
+  if (maxiDmg[4] == 0)
+      maxiDmg[4] = parseInt(100 / this.bot.pokemon.maxhp * 100);;
+      
   return maxiDmg;
 };
+
+
 
 PokeyI.prototype.checkMoveNameExceptions = function(str) {
     if (str.slice(-2) == "60")
