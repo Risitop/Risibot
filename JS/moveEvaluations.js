@@ -9,7 +9,7 @@ Risibot.prototype.choseMove = function() {
     
     for (var i = 0; i < dmgTaken.length; i++) {
       if (dmgTaken[i] && dmgTaken[i] != NaN)
-        dmgTaken[i] = 100 - Math.min(100, this.ennemy.hp - dmgTaken[i]);
+        dmgTaken[i] = parseInt(100 * (Math.min(this.ennemy.hp, dmgTaken[i]) / this.ennemy.hp));
     }
     
     for (var moveType in this.moves) {
