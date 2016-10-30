@@ -49,6 +49,9 @@ Risibot.prototype.choseMove = function() {
         case 'fakeOut':
           movesInterests[k - 1] = this.AI.evalFakeOut(move, dmgTaken);
           break;
+        case 'boosts':
+          movesInterests[k - 1] = this.AI.getBoostMove(move, dmgTaken);
+          break;
       }
       console.log("Risibot: choseMove: Move " + move.name + ".");
     }
