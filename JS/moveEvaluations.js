@@ -21,6 +21,8 @@ Risibot.prototype.choseMove = function() {
     for (var j = 0; j < this.moves[moveType].length; j++) {
       var move = this.moves[moveType][j][0];
       var k = this.moves[moveType][j][1];
+      if (movesInterests[k - 1] > 0 && move.priority > 0)
+          movesInterests[k - 1] = this.AI.evalPriorityMove(move, movesInterests[k - 1], dmgTaken);
       switch (moveType) {
         case 'status':
           movesInterests[k - 1] = this.AI.evalStatus(move, dmgTaken);
@@ -46,11 +48,11 @@ Risibot.prototype.choseMove = function() {
         case 'painSplit':
           movesInterests[k - 1] = this.AI.evalPainSplit(move, dmgTaken);
           break;
-        case 'fakeOut':
-          movesInterests[k - 1] = this.AI.evalFakeOut(move, dmgTaken);
-          break;
         case 'boosts':
           movesInterests[k - 1] = this.AI.getBoostMove(move, dmgTaken);
+          break;
+        case 'fakeOut':
+          movesInterests[k - 1] = this.AI.evalFakeOut(move, dmgTaken);
           break;
       }
       console.log("Risibot: choseMove: Move " + move.name + ".");
