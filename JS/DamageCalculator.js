@@ -32,7 +32,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	for (var i = 0; i < pokemon.moves.length; i++) {//Goes through our moves
 		var m = Moves[BattleMovedex[pokemon.moves[i]].name];//Formats the ith move
 		if (m) {//Checks for exceptions and assigns the move
-			m.bp = getBpException(BattleMovedex[pokemon.moves[i]].name);
+			m.bp = this.getBpException(BattleMovedex[pokemon.moves[i]].name);
 			myPkm.moves[i] = m;
 		} else
 			myPkm.moves[i] = Moves["(No Move)"];
@@ -113,7 +113,7 @@ switch (status) {
 return "Healthy";
 };
 
-getBpException = function(moveName) {//Calculate the base power of some special attacks
+PokeyI.prototype.getBpException = function(moveName) {//Calculate the base power of some special attacks
 	
 var bp = Moves[moveName].bp;
 
