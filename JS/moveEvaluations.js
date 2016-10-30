@@ -418,21 +418,26 @@ PokeyI.prototype.evalBoostMove = function(move, dmgTaken) {
       return 0;
   
   //If yes
-  switch (move.boosts) {
-      case 'spe':
-          if (this.canParalyze(this.bot.ennemy) >= 0.5)//no darkness
-              return 0;
-          return ( (this.bot.room.myPokemon.stats.spe < 438) ? 89 : 0 );
-      case 'atk':
-          if (this.canBurn(this.bot.ennemy) >= 0.5)
-              return 0;
-          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
-      case 'spa':
-          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
-      case 'def':
-          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
-      case 'spd':
-          return ( (this.bot.room.myPokemon.stats.atk < 1000) ? 89 : 0 );
+  for (var b in move.boosts) {
+      var coef = this.getMultiplicator(this.bot.pokemon, b);
+      if (coef == 4)
+          return 0;
+      switch (b) {
+          case 'spe':
+              if (this.canParalyze(this.bot.ennemy) >= 0.5)//no darkness
+                  return 0;
+              return ( (this.bot.room.myPokemon[0].stats.spe * coef < 438) ? 89 : 50 );
+          case 'atk':
+              if (this.canBurn(this.bot.ennemy) >= 0.5)
+                  return 0;
+              return ( (this.bot.room.myPokemon[0].stats.atk * coef < 800) ? 89 : 50 );
+          case 'spa':
+              return ( (this.bot.room.myPokemon[0].stats.spa * coef < 800) ? 89 : 50 );
+          case 'def':
+              return ( (this.bot.room.myPokemon[0].stats.def * coef < 800) ? 89 : 50 );
+          case 'spd':
+              return ( (this.bot.room.myPokemon[0].stats.spd * coef < 800) ? 89 : 50 );
+      }
   }
   return 0;
 };
