@@ -1,4 +1,66 @@
 Risibot.prototype.choseMove = function() {
+    
+    if (!this.pokemon || !this.ennemy)
+        return -1;
+    
+    var dmgComputation = this.AI.getMaxDamageTaken(this.pokemon, this.ennemy);
+    var dmgTaken = dmgComputation[4];
+    var movesInterests = dmgComputation.slice(0, 4);
+    
+    for (var i = 0; i < dmgTaken.length; i++) {
+      if (dmgTaken[i] && dmgTaken[i] != NaN)
+        dmgTaken[i] = 100 - Math.min(100, this.ennemy.hp - dmgTaken[i]);
+    }
+    
+    for (var moveType in this.moves) {
+        for (var j = 0; j < this.moves[moveType].length; j++) {
+            var move = this.moves[moveType][j][0];
+            var k = this.moves[moveType][j][1];
+            switch (moveType) {
+                case 'status':
+                    movesInterests[k - 1] = this.AI.evalStatus(move, dmgTaken);
+                    break;
+                case 'traps':
+                    movesInterests[k - 1] = this.AI.evalTraps(move, dmgTaken);
+                    break;
+                case 'heal':
+                    movesInterests[k - 1] = this.AI.evalHeal(move, dmgTaken);
+                    break;
+                case 'spin':
+                    movesInterests[k - 1] = this.AI.evalSpin(move, dmgTaken);
+                    break;
+                case 'seeds':
+                    movesInterests[k - 1] = this.AI.evalSeeds(move, dmgTaken);
+                    break;
+                case 'defog':
+                    movesInterests[k - 1] = this.AI.evalDefog(move, dmgTaken);
+                    break;
+                case 'roar':
+                    movesInterests[k - 1] = this.AI.evalRoar(move, dmgTaken);
+                    break;
+                case 'painSplit':
+                    movesInterests[k - 1] = this.AI.evalPainSplit(move, dmgTaken);
+                    break;
+            }
+            console.log("Risibot: choseMove: Move " + move.name + ".");
+        }
+    }
+    // We delete disabled moves (scarf, disable...)
+    var disabledMoves = [1, 1, 1, 1];
+    for (var j = 0; j < this.buttonsMoves.length; j++) {
+        if (this.buttonsMoves[j])
+            disabledMoves[this.buttonsMoves[j].value - 1] = 0;
+    }       
+    // We erase the NaN and disabled moves
+    for (j = 0; j < 4; j++) {
+        movesInterests[j] = ( (disabledMoves[j] || movesInterests[j] == NaN) ? 0 : movesInterests[j] );
+    }
+    console.log("Risibot: choseMove: " + movesInterests); 
+    var choice = getMaxIndex(movesInterests);
+    return choice;
+};
+
+Risibot.prototype.choseMove = function() {
 
   if (!this.pokemon || !this.ennemy)
     return -1;
@@ -102,7 +164,7 @@ PokeyI.prototype.getStatusInterest = function(s) {
       return 1;
   }
   return 0;
-}
+};
 
 PokeyI.prototype.evalSpin = function(move, dmgTaken) { // Is this spin worth it ?
 
@@ -164,7 +226,7 @@ PokeyI.prototype.evalSeeds = function(move) {
     return 300;
   if (d < 1.5) // It's crucial to survive
     return 399;
-  return 0 // ABORT MISSION
+  return 0; // ABORT MISSION
 };
 
 PokeyI.prototype.evalDefog = function(move) {
