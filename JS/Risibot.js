@@ -1,4 +1,4 @@
-VER = "0.4";
+VER = "0.4.1";
 
 function Risibot() {
 
