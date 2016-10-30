@@ -165,12 +165,12 @@ PokeyI.prototype.getXHKO = function(defPoke, offPoke) {
   var extraDmg = 0;
 
   extraDmg += (defPoke.status == "brn") ? 12 : 0;
-  extraDmg += (defPoke.status == "psn") ? 12 : 0;
-  extraDmg += (defPoke.status == "tox") ? parseInt(defPoke.statusStage / 16 * 100) : 0;
+  extraDmg += (defPoke.status == "psn" || defPoke.status == "tox") ? 12 : 0; // Todo: toxic tracker
   extraDmg += (defPoke.volatiles.leechseed) ? 12 : 0;
   extraDmg -= (defPoke.item == "leftovers") ? 6 : 0;
-  var hp = defPoke.hp;
-  return Math.ceil(hp / (dmg + extraDmg));
+  var hp = parseInt(defPoke.hp / defPoke.maxhp * 100);
+  
+  return Math.max(1, Math.ceil(hp / (dmg + extraDmg)));
 };
 
 PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of using a healing move
@@ -186,6 +186,8 @@ PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of
     } else if (dmgTaken > 40) {
       if (this.bot.ennemy.status != "" && this.bot.ennemy.status != "par") { //If he has a status
         return 50; //Tempo
+      } else {
+          return 10;
       }
     }
     return 29;
@@ -213,6 +215,8 @@ PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of
           return 29; //Sacrifice
         }
       }
+    } else {
+        return 10;
     }
   } else {
     return ((hp < 30) ? 100 : (hp < 50) ? 80 : (hp < 75) ? 30 : 0);
