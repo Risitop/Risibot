@@ -1,3 +1,4 @@
+
 PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 	// Returns [avg1, avg2, avg3, avg4, dmgTaken]
 	// where avgi is the average percentage dealt to the ennemy by our i-th move.
@@ -42,9 +43,10 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 
 	var maxiDmg = [0, 0, 0, 0, 0];
 	var f = new Field();
+    var numberOfSets = 0;
 	var ennemyName = checkExeptions(this.bot.ennemy.species);//Gets the name of the opponent's pokemon
 	for (var set in setdex[ennemyName]) {//Goes through its possible sets
-
+        numberOfSets += 1;
 		setName = ennemyName + " (" + set + ")";//formats the set's name
 		var ennemyPkm = new PokemonCalc(setName);//Creates a pokemon with the appropriate set
 
@@ -57,10 +59,8 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 		}
 
 		for (var i = 0; i < dmg[0].length; i++) { //Goes trough the damage dealt to the ennemy
-			if (dmg[1][i].damage[7] > maxiDmg[i] && ennemyPkm.level == 100) { // false if it does not exist
-				maxiDmg[i] = dmg[1][i].damage[7];//Contains the average damage dealt to the ennemy by our ith move
-            			}
-		}
+				maxiDmg[i] += dmg[1][i].damage[7];//Contains the average damage dealt to the ennemy by our ith move
+        }
 	}
 
 	for (var i = 0; i < pokemon.moves.length; i++) {//Corner cases
@@ -79,6 +79,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 				maxiDmg[i] = pokemon.maxhp;
 				break;
 		}
+        maxiDmg[i] /= numberOfSets; // We calculate the average power
 		//Transforms the values in life loss percentage
 		maxiDmg[i] = parseInt(100 * maxiDmg[i] / this.bot.ennemy.maxhp);
 		//Refines the calculation by taking into account critical hits
@@ -165,3 +166,4 @@ for (var b in pkmCalc.boosts) {
 	}
 }
 };
+
