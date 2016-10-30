@@ -2,13 +2,19 @@ Risibot.prototype.choseMove = function() {
 
   if (!this.pokemon || !this.ennemy)
     return -1;
+    
+  if (this.pokemon.name != this.room.myPokemon[0].name) {
+      this.currentTurn -= 1;
+      return -1;
+  }
 
   var dmgComputation = this.AI.getMaxDamageTaken(this.pokemon, this.ennemy);
   var dmgTaken = dmgComputation[4];
   var movesInterests = dmgComputation.slice(0, 4);
 
-  for (var i = 0; i < dmgTaken.length; i++) {
-      dmgTaken[i] = parseInt(100 * (Math.min(this.room.battle.yourSide.active[0].hp, dmgTaken[i]) / this.room.battle.yourSide.active[0].hp));
+  for (var i = 0; i < movesInterests.length; i++) {
+      var ennemySlice = this.room.battle.yourSide.active[0].hp;
+      movesInterests[i] = Math.min(100, parseInt(100 * movesInterests[i] / ennemySlice));
   }
 
   for (var moveType in this.moves) {
