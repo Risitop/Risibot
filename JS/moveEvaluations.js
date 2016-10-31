@@ -21,8 +21,12 @@ Risibot.prototype.choseMove = function() {
     for (var j = 0; j < this.moves[moveType].length; j++) {
       var move = this.moves[moveType][j][0];
       var k = this.moves[moveType][j][1];
-      if (movesInterests[k - 1] > 0 && move.priority > 0)
+      if (movesInterests[k - 1]) {
+        if (move.priority > 1)
           movesInterests[k - 1] = this.AI.evalPriorityMove(move, movesInterests[k - 1], dmgTaken);
+        if (this.isBoostAttack(move))
+          movesInterests[k - 1] = this.AI.evalBoostAttack(move, dmgTaken);
+      }
       switch (moveType) {
         case 'status':
           movesInterests[k - 1] = this.AI.evalStatus(move, dmgTaken);
@@ -124,6 +128,10 @@ PokeyI.prototype.getSleepClause = function() {
       return true;
   }
   return false;
+};
+
+PokeyI.prototype.isBoostAttack = function(move) {
+  return ( (!move.secondary) ? false : (!move.secondary.self) ? false : (!move.secondary.self.boosts) ? false : true );
 };
 
 PokeyI.prototype.evalSpin = function(move, dmgTaken) { // Is this spin worth it ?
@@ -411,7 +419,39 @@ PokeyI.prototype.evalPriorityMove = function(move, dmgMove, dmgTaken) {
   return dmgMove;
 };
 
-PokeyI.prototype.evalBoostMove = function(move, dmgTaken) {
+PokeyI.prototype.evalBoostMove = function(move, dmgMove, dmgTaken) {
+  //Can I set up myself ?
+  var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
+  
+  if (k < 2)
+      return 0;
+  
+  //If yes
+  for (var b in move.secondary.self.boosts) {
+      var coef = this.getMultiplicator(this.bot.pokemon, b);
+      if (coef == 4)
+          return 0;
+      switch (b) {
+          case 'spe':
+              if (this.canParalyze(this.bot.ennemy) >= 0.5)//no darkness
+                  return 0;
+              return ( (this.bot.room.myPokemon[0].stats.spe * coef < 438) ? 91 : dmgMove );
+          case 'atk':
+              if (this.canBurn(this.bot.ennemy) >= 0.5)
+                  return 0;
+              return ( (this.bot.room.myPokemon[0].stats.atk * coef < 800) ? 91 : dmgMove );
+          case 'spa':
+              return ( (this.bot.room.myPokemon[0].stats.spa * coef < 800) ? 91 : dmgMove );
+          case 'def':
+              return ( (this.bot.room.myPokemon[0].stats.def * coef < 800) ? 91 : dmgMove );
+          case 'spd':
+              return ( (this.bot.room.myPokemon[0].stats.spd * coef < 800) ? 91 : dmgMove );
+      }
+  }
+  return 0;
+};
+
+PokeyI.prototype.evalBoostAttack = function(move, dmgTaken) {
   //Can I set up myself ?
   var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
   
