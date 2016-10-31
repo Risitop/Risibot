@@ -1,3 +1,5 @@
+
+
 function FullPokemon(pokemonPerso, pokemonGeneral) { // Easier to manipulate
 
   this.moves = pokemonPerso.moves;
@@ -10,7 +12,7 @@ function FullPokemon(pokemonPerso, pokemonGeneral) { // Easier to manipulate
   this.stats = pokemonPerso.stats;
   this.status = pokemonPerso.status;
   this.species = pokemonPerso.species;
-	this.percenthp = parseInt(this.hp / this.maxhp * 100);
+    this.percenthp = parseInt(this.hp / this.maxhp * 100);
 
   this.types = pokemonGeneral.types;
   this.color = pokemonGeneral.color;
@@ -20,7 +22,8 @@ function FullPokemon(pokemonPerso, pokemonGeneral) { // Easier to manipulate
   this.fainted = pokemonGeneral.fainted;
   this.weightkg = pokemonGeneral.weightkg;
   this.baseStats = pokemonGeneral.baseStats;
-    this.name = pokemonGeneral.name;
-    this.lastmove = pokemonGeneral.lastmove;
-    this.volatiles = pokemonGeneral.volatiles;
+  this.name = pokemonGeneral.name;
+  this.lastmove = pokemonGeneral.lastmove;
+  this.volatiles = pokemonGeneral.volatiles;
+  this.moveTrack = pokemonGeneral.moveTrack
 }
