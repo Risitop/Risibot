@@ -1,5 +1,5 @@
 PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
-  // Returns [avg1, avg2, avg3, avg4, dmgTaken]
+  // Returns [avg1, avg2, avg3, avg4, dmgTaken, dmgType]
   // where avgi is the average percentage dealt to the ennemy by our i-th move.
   // and dmgTaken is the maximum damage dealt to our pokemon by the ennemy's one.
 
@@ -56,6 +56,7 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
     for (var i = 0; i < dmg[1].length; i++) { //Goes through the damage that the ennemy can deal us
       if (dmg[0][i].damage[15] > maxiDmg[4]) // false if it does not exist
         maxiDmg[4] = dmg[0][i].damage[15]; //Contains the maximum damage we can possibly take
+        maxiDmg[5] = ennemyPkm.moves[i].type;
     }
     
     if (ennemyPkm.level == 100)      
