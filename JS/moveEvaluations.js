@@ -458,6 +458,13 @@ PokeyI.prototype.evalBoostAttack = function(move, dmgMove, dmgTaken) {
   //Can I set up myself ?
   var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
   
+  if (dmgMove >= 100) {
+    if (this.isFaster(this.bot.pokemon, this.bot.ennemy))
+      return 101.5;
+    else
+      return 100.5; 
+  }
+  
   if (k < 3)
       return dmgMove;
   
