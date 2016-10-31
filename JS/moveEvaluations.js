@@ -229,10 +229,10 @@ PokeyI.prototype.evalHeal = function(move, dmgTaken) { //Returns the priority of
         }
       }
     } else {
-        return 10;
+        return 100;
     }
   } else {
-    return ((hp < 30) ? 100 : (hp < 50) ? 80 : (hp < 75) ? 30 : 0);
+    return ((hp < 30) ? 100 : (hp < 50) ? 80 : (hp < 75) ? 60 : 0);
   }
 };
 
