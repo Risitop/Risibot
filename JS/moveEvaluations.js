@@ -420,6 +420,9 @@ PokeyI.prototype.evalPriorityMove = function(move, dmgMove, dmgTaken) {
 };
 
 PokeyI.prototype.evalBoostMove = function(move, dmgMove, dmgTaken) {
+  
+  if (!move.secondary.self)
+    return 0;
   //Can I set up myself ?
   var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
   
