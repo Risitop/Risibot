@@ -160,12 +160,12 @@ Risibot.prototype.parseMoves = function() {
 
 Risibot.prototype.getPokemon = function() {
   this.pokemon = undefined;
-  pokemonPerso = undefined;
+  var pokemonPerso = undefined;
   for (i = 0; i < this.room.myPokemon.length; i++) {
     if (this.room.myPokemon[i].active)
       pokemonPerso = this.room.myPokemon[i];
   }
-  pokemonGeneral = this.room.battle.mySide.active[0];
+  var pokemonGeneral = this.room.battle.mySide.active[0];
   if (pokemonPerso && pokemonGeneral) {
     this.pokemonParsed = true;
     this.pokemon = new FullPokemon(pokemonPerso, pokemonGeneral);
@@ -204,6 +204,7 @@ Risibot.prototype.attack = function(id) {
   this.room.chooseMove(id, this.buttonsMoves[k]);
   return true;
 };
+
 Risibot.prototype.routine = function() {
 
   if (this.currentTurn < this.room.battle.turn && !this.room.myPokemon[0].fainted) {
@@ -221,11 +222,17 @@ Risibot.prototype.routine = function() {
 
   if (this.waitingForMe()) {
     if (this.pokemon && this.room.battle.mySide.active && !this.room.myPokemon[0].fainted && this.movesParsed && !this.havePlayed) {
-      m = this.choseMove();
+        if (this.pokemon.name != this.room.myPokemon[0].name || 
+            !this.room.battle.mySide.active[0] || this.pokemon.species != this.room.battle.mySide.active[0].species) { // We have to re-parse
+            this.currentTurn -= 1;
+        } else {
+            console.log(this.pokemon.species);
+            m = this.choseMove();
             if (m != -1) {
-                this.attack(m + 1);
+                //this.attack(m + 1);
                 this.havePlayed = true;
             }
+        }
     } else { //Chose another 
       placeholder = 1;
     }
