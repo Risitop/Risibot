@@ -24,7 +24,7 @@ Risibot.prototype.choseMove = function() {
       if (movesInterests[k - 1]) {
         if (move.priority > 1)
           movesInterests[k - 1] = this.AI.evalPriorityMove(move, movesInterests[k - 1], dmgTaken);
-        if (this.isBoostAttack(move))
+        if (this.AI.isBoostAttack(move))
           movesInterests[k - 1] = this.AI.evalBoostAttack(move, dmgTaken);
       }
       switch (moveType) {
