@@ -1,17 +1,14 @@
 Risibot.prototype.choseMove = function() {
 
-  if (!this.pokemon || !this.ennemy)
+  if (!this.pokemon || !this.ennemy) 
     return -1;
-    
-  if (this.pokemon.name != this.room.myPokemon[0].name) {
-      this.currentTurn -= 1;
-      return -1;
-  }
 
   var dmgComputation = this.AI.getMaxDamageTaken(this.pokemon, this.ennemy);
   var dmgTaken = dmgComputation[4];
   var movesInterests = dmgComputation.slice(0, 4);
-
+  
+  console.log("Maximum damage taken: " + dmgTaken);
+  console.log("KO in: " + this.AI.getXHKO(this.pokemon, this.ennemy));
   for (var i = 0; i < movesInterests.length; i++) {
       var ennemySlice = this.room.battle.yourSide.active[0].hp;
       movesInterests[i] = Math.min(100, parseInt(100 * movesInterests[i] / ennemySlice));
@@ -178,10 +175,13 @@ PokeyI.prototype.getXHKO = function(defPoke, offPoke) {
   var extraDmg = 0;
 
   extraDmg += (defPoke.status == "brn") ? 12 : 0;
-  extraDmg += (defPoke.status == "psn" || defPoke.status == "tox") ? 12 : 0; // Todo: toxic tracker
+  extraDmg += ( defPoke.status == "psn" || defPoke.status == "tox" && !this.hasAbility(defPoke, "Poison Heal") ) ? 12 : 0; // Todo: toxic tracker
   extraDmg += (defPoke.volatiles.leechseed) ? 12 : 0;
   extraDmg -= (defPoke.item == "leftovers") ? 6 : 0;
   var hp = parseInt(defPoke.hp / defPoke.maxhp * 100);
+  
+  if (this.hasAbility(defPoke, "Magic Guard"))
+    extraDmg = Math.min(extraDmg, 0);
   
   return Math.max(1, Math.ceil(hp / (dmg + extraDmg)));
 };
