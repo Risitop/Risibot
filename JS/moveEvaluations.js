@@ -378,7 +378,8 @@ PokeyI.prototype.evalRoar = function(move, dmgTaken) {
   
   var coefBoosts = 0;
   for (b in this.bot.ennemy.boosts) {
-    coefBoosts += 2*(this.bot.ennemy.boosts[b]);
+    if (b != 'evasion')
+      coefBoosts += 2*(this.bot.ennemy.boosts[b]);
   }
     
   if (dmgTaken > this.bot.pokemon.hp) { // We will die
