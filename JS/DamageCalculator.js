@@ -41,18 +41,18 @@ PokeyI.prototype.getMaxDamageTaken = function(pokemon) {
 
   // We look for the maximum amount of damage we can take
 
-  var maxiDmg = [0, 0, 0, 0, 0];
+  var maxiDmg = [0, 0, 0, 0, 0, 0];
   var f = new Field();
   var numberOfSets = 0;
   var ennemyName = checkExeptions(this.bot.ennemy.species); //Gets the name of the opponent's pokemon
   for (var set in setdex[ennemyName]) { //Goes through its possible sets
     setName = ennemyName + " (" + set + ")"; //formats the set's name
     var ennemyPkm = new PokemonCalc(setName); //Creates a pokemon with the appropriate set
+    this.applyBoosts(ennemyPkm, this.bot.ennemy);
 
     var dmg = calculateAllMoves(ennemyPkm, myPkm, f);
     /*a 2*4*16 array containing the dmg of the moves 
                                                            for each variance level of both pokemons */
-
     for (var i = 0; i < dmg[1].length; i++) { //Goes through the damage that the ennemy can deal us
       if (dmg[0][i].damage[15] > maxiDmg[4]) // false if it does not exist
         maxiDmg[4] = dmg[0][i].damage[15]; //Contains the maximum damage we can possibly take
