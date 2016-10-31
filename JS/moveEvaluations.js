@@ -25,7 +25,7 @@ Risibot.prototype.choseMove = function() {
         if (move.priority > 1)
           movesInterests[k - 1] = this.AI.evalPriorityMove(move, movesInterests[k - 1], dmgTaken);
         if (this.AI.isBoostAttack(move))
-          movesInterests[k - 1] = this.AI.evalBoostAttack(move, dmgTaken);
+          movesInterests[k - 1] = this.AI.evalBoostAttack(move, movesInterests[k - 1], dmgTaken);
       }
       switch (moveType) {
         case 'status':
@@ -419,7 +419,7 @@ PokeyI.prototype.evalPriorityMove = function(move, dmgMove, dmgTaken) {
   return dmgMove;
 };
 
-PokeyI.prototype.evalBoostMove = function(move, dmgMove, dmgTaken) {
+PokeyI.prototype.evalBoostMove = function(move, dmgTaken) {
   
   if (!move.secondary.self)
     return 0;
@@ -454,33 +454,33 @@ PokeyI.prototype.evalBoostMove = function(move, dmgMove, dmgTaken) {
   return 0;
 };
 
-PokeyI.prototype.evalBoostAttack = function(move, dmgTaken) {
+PokeyI.prototype.evalBoostAttack = function(move, dmgMove, dmgTaken) {
   //Can I set up myself ?
   var k = this.getXHKO(this.bot.pokemon, this.bot.ennemy);
   
   if (k < 3)
-      return 0;
+      return dmgMove;
   
   //If yes
   for (var b in move.boosts) {
       var coef = this.getMultiplicator(this.bot.pokemon, b);
       if (coef == 4)
-          return 0;
+          return dmgMove;
       switch (b) {
           case 'spe':
               if (this.canParalyze(this.bot.ennemy) >= 0.5)//no darkness
-                  return 0;
-              return ( (this.bot.room.myPokemon[0].stats.spe * coef < 438) ? 89 : 50 );
+                  return dmgMove;
+              return ( (this.bot.room.myPokemon[0].stats.spe * coef < 438) ? 89 : dmgMove );
           case 'atk':
               if (this.canBurn(this.bot.ennemy) >= 0.5)
-                  return 0;
-              return ( (this.bot.room.myPokemon[0].stats.atk * coef < 800) ? 89 : 50 );
+                  return dmgMove;
+              return ( (this.bot.room.myPokemon[0].stats.atk * coef < 800) ? 89 : dmgMove );
           case 'spa':
-              return ( (this.bot.room.myPokemon[0].stats.spa * coef < 800) ? 89 : 50 );
+              return ( (this.bot.room.myPokemon[0].stats.spa * coef < 800) ? 89 : dmgMove );
           case 'def':
-              return ( (this.bot.room.myPokemon[0].stats.def * coef < 800) ? 89 : 50 );
+              return ( (this.bot.room.myPokemon[0].stats.def * coef < 800) ? 89 : dmgMove );
           case 'spd':
-              return ( (this.bot.room.myPokemon[0].stats.spd * coef < 800) ? 89 : 50 );
+              return ( (this.bot.room.myPokemon[0].stats.spd * coef < 800) ? 89 : dmgMove );
       }
   }
   return 0;
