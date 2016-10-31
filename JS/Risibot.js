@@ -106,7 +106,7 @@ Risibot.prototype.parseMoves = function() {
       this.moves.taunt.push([m, k]);
     else if (m.priority == -6)
       this.moves.roar.push([m, k]);
-    else if (m.heal)
+    else if (m.flags.heal)
       this.moves.heal.push([m, k]);
     else if (m.target == 'allyTeam')
       this.moves.cure.push([m, k]);
