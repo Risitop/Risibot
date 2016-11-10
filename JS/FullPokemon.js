@@ -17,7 +17,7 @@ function FullPokemon(pokemonGeneral, pokemonPerso) {
   this.species = pokemonGeneral.species; // Weezing
   this.speciesid = pokemonGeneral.speciesid; // weezing -> pokedex id
   this.forme = pokemonGeneral.forme; // Mega etc
-  this.formeLetter = pokemonGeneral.formeLetter; // Unown ?
+  this.formeLetter = pokemonGeneral.formeLetter; // Uknown ?
   this.formeid = pokemonGeneral.formeid; // ?
   this.num = pokemonGeneral.num; // XY pokedex num
 
