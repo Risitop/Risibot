@@ -3,30 +3,15 @@ Probabilist bot whose the goal is to be able to GRIND THE SHOWDOWN'S LADDER.
 
 # In The Previous Episode
 
-- RisibotWatcher class
-- Pain split function
-- isFaster(p1, p2)
+...
 
 # Fixes
 
-- Does not spin on a ghost type
-- Spins leech seeds
-- If ennemy can cure, less chances to status it
-- Technician modifies power of some moves
-- Heal moves work
+...
 
-# To Do
+# Aziz To Do
 
-- Apprendre à commenter HEIN
-- Mirror coat / Counter
-- Rest
-- Synchronize
-- Balancing move coefs
-- Get Danger function
-- Taking account of expected damage
-- Taunt
-- Fake out
-- Méthode de Jacobi MDR
+...
 
 # Maxime To Do
 
@@ -37,12 +22,11 @@ Probabilist bot whose the goal is to be able to GRIND THE SHOWDOWN'S LADDER.
 
 # To Test
 
-- Pain split function
-- isFaster function
+...
 
 # Next Goal
 
-V0.5 : Basic switch !
+V0.5 : Clean code.
 
 # Terms
 Thisibot depends on Pokémon Showdown's client.
